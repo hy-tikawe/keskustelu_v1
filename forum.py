@@ -9,7 +9,7 @@ def get_threads():
     return db.query(sql)
 
 def get_thread(id):
-    sql = "SELECT id, title FROM threads WHERE id=?"
+    sql = "SELECT id, title FROM threads WHERE id = ?"
     return db.query(sql, [id])[0]
 
 def get_messages(thread_id):
