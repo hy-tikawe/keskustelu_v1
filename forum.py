@@ -36,9 +36,9 @@ def add_message(content, user_id, thread_id):
     db.execute(sql, [content, user_id, thread_id])
 
 def update_message(id, content):
-    sql = "UPDATE messages SET content=? WHERE id=?"
+    sql = "UPDATE messages SET content = ? WHERE id = ?"
     db.execute(sql, [content, id])
 
 def remove_message(id):
-    sql = "DELETE FROM messages WHERE id=?"
+    sql = "DELETE FROM messages WHERE id = ?"
     db.execute(sql, [id])
