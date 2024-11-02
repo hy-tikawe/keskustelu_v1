@@ -1,6 +1,5 @@
 from flask import Flask
 from flask import redirect, render_template, request, session
-from werkzeug.security import check_password_hash, generate_password_hash
 import config, db, forum, users
 
 app = Flask(__name__)
@@ -24,19 +23,19 @@ def show_thread(id):
 @app.route("/new_thread", methods=["POST"])
 def new_thread():
     title = request.form["title"]
-    message = request.form["message"]
+    content = request.form["content"]
     user_id = session["user_id"]
 
-    thread_id = forum.add_thread(title, message, user_id)
+    thread_id = forum.add_thread(title, content, user_id)
     return redirect("/thread/" + str(thread_id))
 
 @app.route("/new_message", methods=["POST"])
 def new_message():
-    message = request.form["message"]
+    content = request.form["content"]
     user_id = session["user_id"]
     thread_id = request.form["thread_id"]
 
-    forum.add_message(message, user_id, thread_id)
+    forum.add_message(content, user_id, thread_id)
     return redirect("/thread/" + str(thread_id))
 
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
@@ -47,7 +46,7 @@ def edit_message(id):
         return render_template("edit.html", message=message)
 
     if request.method == "POST":
-        content = request.form["message"]
+        content = request.form["content"]
         forum.update_message(message["id"], content)
         return redirect("/thread/" + str(message["thread_id"]))
 
@@ -60,7 +59,7 @@ def remove_message(id):
 
     if request.method == "POST":
         if "continue" in request.form:
-            forum.delete_message(message["id"])
+            forum.remove_message(message["id"])
         return redirect("/thread/" + str(message["thread_id"]))
 
 @app.route("/new_user", methods=["POST"])

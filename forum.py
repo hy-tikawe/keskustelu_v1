@@ -23,11 +23,11 @@ def get_message(id):
     sql = "SELECT id, content, user_id, thread_id FROM messages WHERE id = ?"
     return db.query(sql, [id])[0]
 
-def add_thread(title, message, user_id):
+def add_thread(title, content, user_id):
     sql = "INSERT INTO threads (title, user_id) VALUES (?, ?)"
     db.execute(sql, [title, user_id])
     thread_id = db.last_insert_id()
-    add_message(message, user_id, thread_id)
+    add_message(content, user_id, thread_id)
     return thread_id
 
 def add_message(content, user_id, thread_id):
@@ -39,6 +39,6 @@ def update_message(id, content):
     sql = "UPDATE messages SET content=? WHERE id=?"
     db.execute(sql, [content, id])
 
-def delete_message(id):
+def remove_message(id):
     sql = "DELETE FROM messages WHERE id=?"
     db.execute(sql, [id])
