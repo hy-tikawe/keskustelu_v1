@@ -3,6 +3,7 @@ from flask import g
 
 def get_connection():
     db = sqlite3.connect("database.db")
+    db.execute("PRAGMA foreign_keys = ON")
     db.row_factory = sqlite3.Row
     return db
 
