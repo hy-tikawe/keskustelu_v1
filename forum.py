@@ -8,9 +8,9 @@ def get_threads():
              ORDER BY t.id DESC"""
     return db.query(sql)
 
-def get_thread(id):
+def get_thread(thread_id):
     sql = "SELECT id, title FROM threads WHERE id = ?"
-    return db.query(sql, [id])[0]
+    return db.query(sql, [thread_id])[0]
 
 def get_messages(thread_id):
     sql = """SELECT m.id, m.content, m.sent_at, m.user_id, u.username
@@ -19,9 +19,9 @@ def get_messages(thread_id):
              ORDER BY m.id"""
     return db.query(sql, [thread_id])
 
-def get_message(id):
+def get_message(message_id):
     sql = "SELECT id, content, user_id, thread_id FROM messages WHERE id = ?"
-    return db.query(sql, [id])[0]
+    return db.query(sql, [message_id])[0]
 
 def add_thread(title, content, user_id):
     sql = "INSERT INTO threads (title, user_id) VALUES (?, ?)"
@@ -35,10 +35,10 @@ def add_message(content, user_id, thread_id):
              (?, datetime('now'), ?, ?)"""
     db.execute(sql, [content, user_id, thread_id])
 
-def update_message(id, content):
+def update_message(message_id, content):
     sql = "UPDATE messages SET content = ? WHERE id = ?"
-    db.execute(sql, [content, id])
+    db.execute(sql, [content, message_id])
 
-def remove_message(id):
+def remove_message(message_id):
     sql = "DELETE FROM messages WHERE id = ?"
-    db.execute(sql, [id])
+    db.execute(sql, [message_id])
